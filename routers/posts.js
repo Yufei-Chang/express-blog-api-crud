@@ -1,37 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const dataElem = require('../data');
+const commander = require('../controllers/postscommander');
 
 // INDEX
-router.get('/', (req, res) => {
-    // Lettura generale, dritti sul json
-    res.json(dataElem);
-});
+router.get('/', commander.index);
 
 // SHOW
-router.get('/:id', (req, res) => {
-    // Lettura mirata, buttiamo l'id in una variabile
-    const elemId = req.params.id;
-    res.json("Leggiamo l'elemento specifico" + elemId);
-});
+router.get('/:id', commander.show);
 
 // CREATE
-router.post('/', (req, res) => {
-    // const elemId = req.params.id;
-    res.json("Creiamo un elemento");
-});
+router.post('/', commander.create);
 
 // UPDATE
-router.put('/:id', (req, res) => {
-    const elemId = req.params.id;
-    res.json("Con questo aggiorniamo tutti i dati di un elemento" + elemId);
-});
+router.put('/:id', commander.update);
 
-// DELETE
-router.delete('/:id', (req, res) => {
-    const elemId = req.params.id;
-    res.json("Cancelliamo l'elemento" + elemId);
-});
+// MODIFY
+router.patch('/:id', commander.modify);
+
+// DESTROY
+router.delete('/:id', commander.destroy);
 
 // FINITI I ROUTERS, LI ESPORTO
 module.exports = router;

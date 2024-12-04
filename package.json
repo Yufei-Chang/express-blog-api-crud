@@ -10,7 +10,6 @@
     "start": "node app.js",
     "dev": "node --watch app.js"
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "description": ""
