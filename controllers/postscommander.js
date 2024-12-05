@@ -18,12 +18,47 @@ const show = (req, res) => {
 }
 
 const create = (req, res) => {
-    res.json("Creiamo un elemento");
+    // console.log(req.body);
+    // Cerco l'indice dell'ultimo elemento dell'array
+    const lastElemIndex = dataElem.length -1;
+    // Recupero l'ultimo elemento grazie all'indice trovato prima
+    const lastElem = dataElem[lastElemIndex];
+    // Estraggo l'id dell'ultimo elemento
+    const lastElemId = lastElem.id;
+    // Calcolo il nuovo id, incrementando di 1 all'id dell'ultimo elemento
+    const newId = lastElemId + 1;
+    // Creo un nuovo elemento che include l'id calcolato prima
+    const newPost = {
+        id: newId,
+        title: req.body.title,
+        contenuto: req.body.contenuto,
+        image: req.body.image,
+        tags: req.body.tags
+    }
+    dataElem.push(newPost);
+    res.statusCode = (201);
+    res.json(newPost);
 }
 
 const update = (req, res) => {
-    const elemId = req.params.id;
-    res.json("Con questo aggiorniamo tutti i dati di un elemento" + elemId);
+    // Trasformo in numero l'input dell'utente
+    const elemId = parseInt(req.params.id);
+    // Prendo i dati modificati
+    const updateElem = req.body;
+    // Addo l'id al coso nuovo
+    updateElem.id = elemId;
+    // Cerco l'index del vecchio elemento da modificare
+    const indexToUpdate = dataElem.findIndex((curItem) => curItem.id === elemId);
+    // Mandiamo a quel paese l'utente se ha scritto roba che non si trova
+    if (indexToUpdate === -1) {
+        res.statusCode = (404);
+        res.json({error: true, message: "Cazz hai scritto brutto imbecille"})
+    } else {
+        // Se lo trovo quello che vuole, faccio quello che vuole
+        // Sostituisco il vecchio elemento con quello nuovo
+        dataElem[indexToUpdate] = updateElem;
+        res.json(dataElem);
+    }
 }
 
 const destroy = (req, res) => {

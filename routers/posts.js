@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const dataElem = require('../data');
 const commander = require('../controllers/postscommander');
 
 // INDEX
