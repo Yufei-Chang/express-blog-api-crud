@@ -49,16 +49,10 @@ const update = (req, res) => {
     updateElem.id = elemId;
     // Cerco l'index del vecchio elemento da modificare
     const indexToUpdate = dataElem.findIndex((curItem) => curItem.id === elemId);
-    // Mandiamo a quel paese l'utente se ha scritto roba che non si trova
-    if (indexToUpdate === -1) {
-        res.statusCode = (404);
-        res.json({error: true, message: "Cazz hai scritto brutto imbecille"})
-    } else {
         // Se lo trovo quello che vuole, faccio quello che vuole
         // Sostituisco il vecchio elemento con quello nuovo
         dataElem[indexToUpdate] = updateElem;
         res.json(dataElem);
-    }
 }
 
 const destroy = (req, res) => {
