@@ -9,6 +9,9 @@ app.get('/', (req, res) => {
     res.send('Questo è il mio server');
 });
 
+app.use(cors({
+    origin: 'http://localhost:5173'
+  }));
 
 app.use(express.json());
 app.use(reqErr.reqError);
