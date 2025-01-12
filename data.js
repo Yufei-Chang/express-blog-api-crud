@@ -3,7 +3,7 @@ const posts = [
         id: 1,
         title: 'Ciambellone',
         content: 'Foto di una cosa che Homer Simpson ama',
-        image: "https://i.ebayimg.com/images/g/jfgAAOSw3PdkRHkE/s-l1200.jpg",
+        image: "/public/ciambellone.jpg",
         tags: ['droga', 'veleno', 'mh'],
     },
     {
