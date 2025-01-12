@@ -20,4 +20,4 @@ app.use('/posts', routers);
 app.use(express.static('public'));
 
 // AVVIO IL SERVER
-app.listen(port, () => { });
+app.listen(port, () => { console.log("server avviato") });
