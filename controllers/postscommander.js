@@ -31,7 +31,7 @@ const create = (req, res) => {
     const newPost = {
         id: newId,
         title: req.body.title,
-        contenuto: req.body.contenuto,
+        content: req.body.content,
         image: req.body.image,
         tags: req.body.tags
     }
