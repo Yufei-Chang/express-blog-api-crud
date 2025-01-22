@@ -1,26 +1,60 @@
 const dataElem = require('../data');
+const connection = require("../db");
 
-const index = (req, res) => {res.json(dataElem);};
+const index = (req, res) => {
+    // faccio la query
+    const sql = "SELECT * FROM posts";
+    connection.query(
+        sql, (err, resp) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Errore interno, non cagare il cazzo"
+                })
+            } else if (resp.length === 0) {
+                return res.status(500).json({
+                    message: "No ce so post ok"
+                })
+            } else {
+                return res.status(200).json({
+                    message: "eddaje cazzo siuuummm",
+                    data: resp
+                })
+            }
+        }
+    )
+}
 
 const show = (req, res) => {
     // Questo è l'id passato come parametro tramite la chiamata http, lo trasformo in un numero
     const elemId = parseInt(req.params.id);
-    // Per eseguire il comando verso un elemento specifico, devo leggere l'array, per leggere mi serve il ciclo for
-    for (let i = 0; i < dataElem.length; i++) {
-        // Inserisco nella variabile ogni singolo elemento letto
-        const curItem = dataElem[i];
-        // Confronto l'id dell'elemento corrente(curItem) con l'input(parametro) dell'utente(elemId)
-        if (curItem.id === elemId) {
-            // Restituisco in Json l'elemento chiamato
-            res.json(curItem);
+    // faccio la query
+    const sql = "SELECT * FROM posts WHERE id=?";
+    connection.query(
+        sql,
+        [elemId],
+        (err, resp) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Errore interno, non cagare il cazzo"
+                })
+            } else if (resp.length === 0) {
+                return res.status(500).json({
+                    message: "Non è stato trovato nessun risultato richiesto"
+                })
+            } else {
+                return res.status(200).json({
+                    message: "eddaje cazzo siuuummm",
+                    data: resp[0]
+                })
+            }
         }
-    }
+    )
 }
 
 const create = (req, res) => {
     // console.log(req.body);
     // Cerco l'indice dell'ultimo elemento dell'array
-    const lastElemIndex = dataElem.length -1;
+    const lastElemIndex = dataElem.length - 1;
     // Recupero l'ultimo elemento grazie all'indice trovato prima
     const lastElem = dataElem[lastElemIndex];
     // Estraggo l'id dell'ultimo elemento
@@ -49,21 +83,37 @@ const update = (req, res) => {
     updateElem.id = elemId;
     // Cerco l'index del vecchio elemento da modificare
     const indexToUpdate = dataElem.findIndex((curItem) => curItem.id === elemId);
-        // Se lo trovo quello che vuole, faccio quello che vuole
-        // Sostituisco il vecchio elemento con quello nuovo
-        dataElem[indexToUpdate] = updateElem;
-        res.json(dataElem);
+    // Se lo trovo quello che vuole, faccio quello che vuole
+    // Sostituisco il vecchio elemento con quello nuovo
+    dataElem[indexToUpdate] = updateElem;
+    res.json(dataElem);
 }
 
 const destroy = (req, res) => {
-    // Faccio sincronizzare l'indice con la lunghezza array con il -1 (es attuale: lunghezza array 5 e index max 4)
-    const elemId = req.params.id -1;
-    // Splice è una funzione che rimuove l'elemento specificato
-    dataElem.splice(elemId, 1);
-    console.log(dataElem);
-    // sendStatus è una funzione che manda lo stato della risposta, il 204 indica una risposta positiva ma senza contenuto
-    res.sendStatus(204);
+
+    const elemId = parseInt(req.params.id);
+    // faccio la query
+    const sql = "DELETE FROM posts WHERE id=?";
+    connection.query(
+        sql,
+        [elemId],
+        (err, resp) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Errore interno, non cagare il cazzo"
+                })
+            } else if (resp.length === 0) {
+                return res.status(500).json({
+                    message: "Non è stato trovato nessun risultato richiesto"
+                })
+            } else {
+                return res.status(200).json({
+                    message: "Bersaglio eliminato, rientriamo nella base",
+                })
+            }
         }
+    )
+}
 
 const modify = (req, res) => {
     const elemId = req.params.id;
@@ -71,4 +121,4 @@ const modify = (req, res) => {
 }
 
 
-module.exports = {index, show, create, update, destroy, modify} 
+module.exports = { index, show, create, update, destroy, modify } 
